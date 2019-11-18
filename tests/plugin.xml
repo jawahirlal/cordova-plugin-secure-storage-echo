@@ -20,7 +20,7 @@
 
     <platform name="android">
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest">
-            <manifest android:sharedUserId="com.crypho.SecureStorageTestsUser" />
+            <manifest android:sharedUserId="com.crypho2.SecureStorageTestsUser" />
         </edit-config>
         <dependency id="cordova-plugin-device" version="*" />
         <dependency id="cordova-plugin-app-launcher" version="*" />

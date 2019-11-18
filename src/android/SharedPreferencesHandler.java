@@ -1,4 +1,4 @@
-package com.crypho.plugins;
+package com.crypho2.plugins;
 
 import java.util.Set;
 import java.util.HashSet;

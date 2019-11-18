@@ -1,4 +1,4 @@
-package com.crypho.plugins;
+package com.crypho2.plugins;
 
 import android.util.Base64;
 import org.json.JSONObject;

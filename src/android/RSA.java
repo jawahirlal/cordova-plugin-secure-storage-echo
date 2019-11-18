@@ -1,4 +1,4 @@
-package com.crypho.plugins;
+package com.crypho2.plugins;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -35,6 +35,26 @@ public class RSA {
     public static byte[] decrypt(byte[] buf, String alias) throws Exception {
         return runCipher(Cipher.DECRYPT_MODE, alias, buf);
     }
+    
+    public static void createKeyPairLEGACY(Context ctx, String alias) throws Exception {
+        Calendar notBefore = Calendar.getInstance();
+        Calendar notAfter = Calendar.getInstance();
+        notAfter.add(Calendar.YEAR, 100);
+        String principalString = String.format("CN=%s, OU=%s", alias, ctx.getPackageName());
+        KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(ctx)
+            .setAlias(alias)
+            .setSubject(new X500Principal(principalString))
+            .setSerialNumber(BigInteger.ONE)
+            .setStartDate(notBefore.getTime())
+            .setEndDate(notAfter.getTime())
+            .setEncryptionRequired()
+            .setKeySize(2048)
+            .setKeyType("RSA")
+            .build();
+        KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance("RSA", KEYSTORE_PROVIDER);
+        kpGenerator.initialize(spec);
+        kpGenerator.generateKeyPair();
+    }
 
     public static void createKeyPair(Context ctx, String alias, Integer userAuthenticationValidityDuration) throws Exception {
         AlgorithmParameterSpec spec = IS_API_23_AVAILABLE ? getInitParams(alias, userAuthenticationValidityDuration) : getInitParamsLegacy(ctx, alias);
@@ -43,8 +63,8 @@ public class RSA {
         kpGenerator.initialize(spec);
         kpGenerator.generateKeyPair();
     }
-
-    /**
+    
+     /**
      * Check if Encryption Keys are available and secure.
      *
      * @param alias
@@ -74,7 +94,7 @@ public class RSA {
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private static boolean isEntryAvailableLegacy(String alias) {
+    public static boolean isEntryAvailableLegacy(String alias) {
         try {
             return loadKey(Cipher.ENCRYPT_MODE, alias) != null;
         } catch (Exception e) {
